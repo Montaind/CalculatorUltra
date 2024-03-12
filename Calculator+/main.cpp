@@ -132,7 +132,28 @@ int main() {
 
 
 	}
+	first = false;
+	first_end = false;
+	second = false;
+	second_end = false;
+	action = 0;
+	first_n = 0;
+	second_n = 0;
+	first_buffer = 0;
+	second_buffer = 0;
+	result = 0;
+	buffer = 0;
+	action_2 = 0;
+	priorety = false;
+	complete = false;
+	converted_int = { "" };
+	first_pos = 0;
+	second_pos = 0;
+	result_i = 0;
 	for (int i = 0; i < str.size(); i++) {
+		if (i + 1 == str.size()) {
+			second_end = true;
+		}
 		if (str[i] >= '0' && str[i] <= '9') {
 			if (first_end) {
 				second = true;
@@ -148,27 +169,120 @@ int main() {
 		}
 		else
 			if (str[i] == '+') {
-				first_end = true;
-				action = '+';
+				if (action) {
+					if (first_end) {
+						second_end = true;
+						action_2 = '+';
+					}
+					else {
+						first_end = true;
+						action_2 = '+';
+					}
+				}
+				else {
+					if (first_end) {
+						second_end = true;
+						action = '+';
+					}
+					else {
+						first_end = true;
+						action = '+';
+					}
+				}
 			}
 			else
 				if (str[i] == '-') {
-					first_end = true;
-					action = '-';
+					if (action) {
+						if (first_end) {
+							second_end = true;
+							action_2 = '-';
+						}
+						else {
+							first_end = true;
+							action_2 = '-';
+						}
+					}
+					else {
+						if (first_end) {
+							second_end = true;
+							action = '-';
+						}
+						else {
+							first_end = true;
+							action = '-';
+						}
+					}
 				}
-		if (first && action && second) {
+				else
+					if (str[i] == '*') {
+						if (action) {
+							if (first_end) {
+								second_end = true;
+								action_2 = '*';
+							}
+							else {
+								first_end = true;
+								action_2 = '*';
+							}
+						}
+						else {
+							if (first_end) {
+								second_end = true;
+								action = '*';
+							}
+							else {
+								first_end = true;
+								action = '*';
+							}
+						}
+					}
+					else if (str[i] == '/') {
+						if (action) {
+							if (first_end) {
+								second_end = true;
+								action_2 = '/';
+							}
+							else {
+								first_end = true;
+								action_2 = '/';
+							}
+						}
+						else {
+							if (first_end) {
+								second_end = true;
+								action = '/';
+							}
+							else {
+								first_end = true;
+								action = '/';
+							}
+						}
+					}
+		if (first && action && second_end) {
 			if (action == '+') {
 				result = first_buffer + second_buffer;
 			}
 			else if (action == '-') {
 				result = first_buffer - second_buffer;
 			}
+			else if (action == '*') {
+				result = first_buffer * second_buffer;
+			}
+			else if (action == '/') {
+				result = first_buffer / second_buffer;
+			}
+			second = false;
+			second_end = false;
+			buffer = result;
+			first_buffer = buffer;
+			action = action_2;
+			second_n = 0;
+			second_buffer = 0;
+			result = 0;
 		}
-		first_buffer = second_buffer;
-		second = false;
-		second_end = false;
-		second_buffer = 0;
 	}
-	cout << result;
+
+
+	cout << buffer;
 }
 	
