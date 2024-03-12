@@ -10,6 +10,7 @@ int main() {
 	bool first_end = false;
 	bool second = false;
 	bool second_end = false;
+	int result_i = 0;
 	char action = 0;
 	double first_n = 0;
 	double second_n = 0;
@@ -23,29 +24,13 @@ int main() {
 	string converted_int;
 	int first_pos;
 	int second_pos;
-	/*for (int i = 0; i < str.size(); i++) {
-		if (str[i] == '+' || str[i] == '-' || str[i] == '*' || str[i] == '/') {
-			count++;
-		}
-	}
-	for (int j = 0; j < count; j++) {*/
-	// делаем str простым с + и минусами
 	for (int i = 0; i < str.size(); i++) {
 		if (i + 1 == str.size()) {
-			second_pos = i;
-			second_end = true;
-		}
-		if (first_end && second_end) {
-			if (action == '*') {
-				result = first_buffer * second_buffer;
-				converted_int = to_string(result);
+			if (second || str[i] >= '0' && str[i] <= '9') {
+				second_pos = i;
+				second_end = true;
 			}
-			else if (action == '/') {
-				result = first_buffer / second_buffer;
-				converted_int = to_string(result);
-			}
-			count = second_pos - first_pos + 1;
-			str.replace(first_pos, count, converted_int);
+			else break;
 		}
 		if (str[i] >= '0' && str[i] <= '9') {
 			if (!first_end) {
@@ -107,9 +92,47 @@ int main() {
 				second_end = true;
 			}
 		}
+		if (first_end && second_end) {
+			if (action == 42) {
+				result = first_buffer * second_buffer;
+				if (int(result) - result == 0) {
+					result_i = int(result);
+					converted_int = to_string(result_i);
+				}
+			}
+			else if (action == '/') {
+				result = first_buffer / second_buffer;
+				if (int(result) - result == 0) {
+					result_i = int(result);
+					converted_int = to_string(result_i);
+				}
+			}
+			count = second_pos - first_pos + 1;
+			str.replace(first_pos, count, converted_int);
+			first = false;
+			first_end = false;
+			second = false;
+			second_end = false;
+			action = 0;
+			first_n = 0;
+			second_n = 0;
+			first_buffer = 0;
+			second_buffer = 0;
+			result = 0;
+			buffer = 0;
+			action_2 = 0;
+			priorety = false;
+			complete = false;
+			converted_int = {""};
+			first_pos = 0;
+			second_pos = 0;
+			result_i = 0;
+			i = -1;
+		}
+
+
 	}
-	cout << str;
-	/*for (int i = 0; i < str.size(); i++) {
+	for (int i = 0; i < str.size(); i++) {
 		if (str[i] >= '0' && str[i] <= '9') {
 			if (first_end) {
 				second = true;
@@ -133,33 +156,19 @@ int main() {
 					first_end = true;
 					action = '-';
 				}
-				else
-					if (str[i] == '*') {
-						first_end = true;
-						action = '*';
-					}
-					else if (str[i] == '/') {
-						first_end = true;
-						action = '/';
-					}
+		if (first && action && second) {
+			if (action == '+') {
+				result = first_buffer + second_buffer;
+			}
+			else if (action == '-') {
+				result = first_buffer - second_buffer;
+			}
+		}
+		first_buffer = second_buffer;
+		second = false;
+		second_end = false;
+		second_buffer = 0;
 	}
-	if (first && action && second) {
-		if (action == '+') {
-			result = first_buffer + second_buffer;
-		}
-		else if (action == '-') {
-			result = first_buffer - second_buffer;
-		}
-		else if (action == '*') {
-			result = first_buffer * second_buffer;
-		}
-		else if (action == '/') {
-			result = first_buffer / second_buffer;
-		}
-	}
-	first_buffer = second_buffer;
-	second = false;
-	second_end = false;
-	second_buffer = 0;*/
+	cout << result;
 }
 	
