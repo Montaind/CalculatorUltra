@@ -30,6 +30,9 @@ int main() {
 	bool point_found = false;
 	bool point_found1 = false;
 	bool point_found2 = false;
+	string v;
+	for (char c : str) if (c != ' ') v += c;
+	str = v;
 
 	for (int i = 0; i < str.size(); i++) {
 	
