@@ -26,6 +26,17 @@ int main() {
 	int first_pos;
 	int second_pos;
 	char action_old = 0;
+	int divine_counter = 1;
+	bool point_found = false;
+
+	for (int i = 0; i < str.size(); i++) {
+	
+	}
+
+
+
+
+
 	for (int i = 0; i < str.size(); i++) {
 		if (str[i] >= '0' && str[i] <= '9') {
 			if (!first_end) {
@@ -48,6 +59,22 @@ int main() {
 				}
 
 			}
+		}
+		if (first_end || second_end) {
+			if (first_end && !second_end) {
+				if (point_found) {
+					first_buffer /= divine_counter;
+				}
+			}
+			else {
+				if (point_found) {
+					second_buffer /= divine_counter;
+				}
+			}
+		}
+		else if (str[i] == '.') {
+			point_found = true;
+			divine_counter *= 10;
 		}
 		else if (str[i] == '+') {
 			if (!first_end) {
@@ -185,9 +212,14 @@ int main() {
 			action_pos = 0;
 			count = 0;
 			action_old = 0;
+			point_found = false;
+			divine_counter = 0;
 		}
 	}
 	
+
+
+
 	for (int i = 0; i < str.size(); i++) {
 		if (i + 1 == str.size()) {
 			second_end = true;
@@ -206,6 +238,22 @@ int main() {
 
 		}
 		else
+			if (first_end || second_end) {
+				if (first_end && !second_end) {
+					if (point_found) {
+						first_buffer /= divine_counter;
+					}
+				}
+				else {
+					if (point_found) {
+						second_buffer /= divine_counter;
+					}
+				}
+			}
+			else if (str[i] == '.') {
+				point_found = true;
+				divine_counter *= 10;
+			}
 			if (str[i] == '+') {
 				if (action) {
 					if (first_end) {
@@ -319,7 +367,20 @@ int main() {
 			result = 0;
 		}
 	}
-
-
-	cout << buffer;
+	if (buffer == 0) {
+		count = 0;
+		for (int i = 0; i < str.size(); i++) {
+			if (str[i] == '+' || str[i] == '-' || str[i] == '*' || str[i] == '/') {
+				count++;
+			}
+		}
+		if (count == 0) {
+			for (int j = 0; j < str.size(); j++) {
+				cout << str[j];
+			}
+		}
+	}
+	else {
+		cout << buffer;
+	}
 }
