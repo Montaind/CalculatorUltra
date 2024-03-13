@@ -28,6 +28,8 @@ int main() {
 	char action_old = 0;
 	int divine_counter = 1;
 	bool point_found = false;
+	bool point_found1 = false;
+	bool point_found2 = false;
 
 	for (int i = 0; i < str.size(); i++) {
 	
@@ -60,21 +62,14 @@ int main() {
 
 			}
 		}
-		if (first_end || second_end) {
-			if (first_end && !second_end) {
-				if (point_found) {
-					first_buffer /= divine_counter;
-				}
-			}
-			else {
-				if (point_found) {
-					second_buffer /= divine_counter;
-				}
-			}
-		}
 		else if (str[i] == '.') {
 			point_found = true;
-			divine_counter *= 10;
+			if (first_end) {
+				point_found2 = true;
+			}
+			else {
+				point_found1 = true;
+			}
 		}
 		else if (str[i] == '+') {
 			if (!first_end) {
@@ -139,6 +134,10 @@ int main() {
 					first_n = false;
 					first_end = false;
 					first_buffer = 0;
+					point_found = false;
+					divine_counter = 1;
+					point_found1 = false;
+					point_found2 = false;
 					break;
 				}
 			}
@@ -147,7 +146,36 @@ int main() {
 				first_n = false;
 				first_end = false;
 				first_buffer = 0;
+				point_found = false;
+				divine_counter = 1;
+				point_found1 = false;
+				point_found2 = false;
 				break;
+			}
+
+		}
+		if (point_found) {
+			if (point_found1) {
+				if (first && !first_end) {
+					divine_counter *= 10;
+				}
+				else if (first_end) {
+					first_buffer /= divine_counter;
+					point_found = false;
+					divine_counter = 1;
+					point_found1 = false;
+				}
+			}
+			else if (point_found2) {
+				if (second && !second_end) {
+					divine_counter *= 10;
+				}
+				else if (second_end) {
+					second_buffer /= divine_counter;
+					point_found = false;
+					divine_counter = 1;
+					point_found2 = false;
+				}
 			}
 		}
 		if (first_end && second_end) {
@@ -213,7 +241,9 @@ int main() {
 			count = 0;
 			action_old = 0;
 			point_found = false;
-			divine_counter = 0;
+			divine_counter = 1;
+			point_found1 = false;
+			point_found2 = false;
 		}
 	}
 	
@@ -238,21 +268,14 @@ int main() {
 
 		}
 		else
-			if (first_end || second_end) {
-				if (first_end && !second_end) {
-					if (point_found) {
-						first_buffer /= divine_counter;
-					}
+			if (str[i] == '.') {
+				point_found = true;
+				if (first_end) {
+					point_found2 = true;
 				}
 				else {
-					if (point_found) {
-						second_buffer /= divine_counter;
-					}
+					point_found1 = true;
 				}
-			}
-			else if (str[i] == '.') {
-				point_found = true;
-				divine_counter *= 10;
 			}
 			if (str[i] == '+') {
 				if (action) {
@@ -344,6 +367,30 @@ int main() {
 							}
 						}
 					}
+			if (point_found) {
+				if (point_found1) {
+					if (first && !first_end) {
+						divine_counter *= 10;
+					}
+					else if (first_end) {
+						first_buffer /= divine_counter;
+						point_found = false;
+						divine_counter = 1;
+						point_found1 = false;
+					}
+				}
+				else if (point_found2) {
+					if (second && !second_end) {
+						divine_counter *= 10;
+					}
+					else if (second_end) {
+						second_buffer /= divine_counter;
+						point_found = false;
+						divine_counter = 1;
+						point_found2 = false;
+					}
+				}
+			}
 		if (first && action && second_end) {
 			if (action == '+') {
 				result = first_buffer + second_buffer;
