@@ -21,23 +21,24 @@ int main() {
 	char action_2 = 0;
 	bool priorety = false;
 	bool complete = false;
+	int action_pos = 0;
 	string converted_int;
 	int first_pos;
 	int second_pos;
+	char action_old = 0;
 	for (int i = 0; i < str.size(); i++) {
-		if (i + 1 == str.size()) {
-			if (second || str[i] >= '0' && str[i] <= '9') {
-				second_pos = i;
-				second_end = true;
-			}
-			else break;
-		}
 		if (str[i] >= '0' && str[i] <= '9') {
 			if (!first_end) {
-				first = true;
-				first_n = str[i] - 48;
-				first_buffer = first_buffer * 10 + first_n;
-				first_pos = i;
+				if (!first) {
+					first = true;
+					first_n = str[i] - 48;
+					first_buffer = first_buffer * 10 + first_n;
+					first_pos = i;
+				}
+				else {
+					first_n = str[i] - 48;
+					first_buffer = first_buffer * 10 + first_n;
+				}
 			}
 			else {
 				if (priorety) {
@@ -53,6 +54,7 @@ int main() {
 				first = false;
 				first_n = 0;
 				first_buffer = 0;
+				action_pos = i;
 			}
 			else {
 				second_pos = i - 1;
@@ -61,6 +63,7 @@ int main() {
 		}
 		else if (str[i] == '-') {
 			if (!first_end) {
+				action_pos = i;
 				first = false;
 				first_n = 0;
 				first_buffer = 0;
@@ -72,39 +75,90 @@ int main() {
 		}
 		else if (str[i] == '*') {
 			if (!first_end) {
+				action_pos = i;
 				action = '*';
 				first_end = true;
 				priorety = true;
 			}
 			else {
+				action_old = action;
+				action = '*';
 				second_pos = i - 1;
 				second_end = true;
 			}
 		}
 		else if (str[i] == '/') {
 			if (!first_end) {
+				action_pos = i;
 				action = '/';
 				first_end = true;
 				priorety = true;
 			}
 			else {
+				action_old = action;
+				action = '/';
 				second_pos = i - 1;
 				second_end = true;
 			}
 		}
-		if (first_end && second_end) {
-			if (action == 42) {
-				result = first_buffer * second_buffer;
-				if (int(result) - result == 0) {
-					result_i = int(result);
-					converted_int = to_string(result_i);
+		if (i+1 == str.size()) {
+			if (second || str[i] >= '0' && str[i] <= '9') {
+				if (action_pos - first_pos > 0) {
+					second_pos = i;
+					second_end = true;
+				}
+				else {
+					first = false;
+					first_n = false;
+					first_end = false;
+					first_buffer = 0;
+					break;
 				}
 			}
-			else if (action == '/') {
-				result = first_buffer / second_buffer;
-				if (int(result) - result == 0) {
-					result_i = int(result);
-					converted_int = to_string(result_i);
+			else {
+				first = false;
+				first_n = false;
+				first_end = false;
+				first_buffer = 0;
+				break;
+			}
+		}
+		if (first_end && second_end) {
+			if (!action_old) {
+				if (action == '*') {
+					result = first_buffer * second_buffer;
+					if (int(result) - result == 0) {
+						result_i = int(result);
+						converted_int = to_string(result_i);
+
+					}
+					else converted_int = to_string(result);
+				}
+				else if (action == '/') {
+					result = first_buffer / second_buffer;
+					if (int(result) - result == 0) {
+						result_i = int(result);
+						converted_int = to_string(result_i);
+					}
+					else converted_int = to_string(result);
+				}
+			}
+			else {
+				if (action_old == '*') {
+					result = first_buffer * second_buffer;
+					if (int(result) - result == 0) {
+						result_i = int(result);
+						converted_int = to_string(result_i);
+					}
+					else converted_int = to_string(result);
+				}
+				else if (action_old == '/') {
+					result = first_buffer / second_buffer;
+					if (int(result) - result == 0) {
+						result_i = int(result);
+						converted_int = to_string(result_i);
+					}
+					else converted_int = to_string(result);
 				}
 			}
 			count = second_pos - first_pos + 1;
@@ -123,33 +177,17 @@ int main() {
 			action_2 = 0;
 			priorety = false;
 			complete = false;
-			converted_int = {""};
+			converted_int = { "" };
 			first_pos = 0;
 			second_pos = 0;
 			result_i = 0;
 			i = -1;
+			action_pos = 0;
+			count = 0;
+			action_old = 0;
 		}
-
-
 	}
-	first = false;
-	first_end = false;
-	second = false;
-	second_end = false;
-	action = 0;
-	first_n = 0;
-	second_n = 0;
-	first_buffer = 0;
-	second_buffer = 0;
-	result = 0;
-	buffer = 0;
-	action_2 = 0;
-	priorety = false;
-	complete = false;
-	converted_int = { "" };
-	first_pos = 0;
-	second_pos = 0;
-	result_i = 0;
+	
 	for (int i = 0; i < str.size(); i++) {
 		if (i + 1 == str.size()) {
 			second_end = true;
