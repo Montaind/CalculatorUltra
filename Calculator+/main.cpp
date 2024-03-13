@@ -323,4 +323,3 @@ int main() {
 
 	cout << buffer;
 }
-	
